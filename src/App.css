@@ -5,9 +5,26 @@
   text-align: center;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none; /* Remove default Webkit styles */
+  margin: 0; /* Remove default margins */
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield; /* Make it look like a regular text field */
+}
+
 .image-header {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 16px;
+  margin-bottom: 24px;
+
+  .rows-input {
+    display: flex;
+    gap: 8px;
+  }
 }
