@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import "./Puzzle.css";
+
+const PUZZLE_WIDTH = 500;
 
 const Puzzle = ({ image, rows, cols }) => {
   const [tiles, setTiles] = useState([]);
   const [solved, setSolved] = useState(false);
 
+  let img = document.createElement("img");
+  img.src = image;
+
   useEffect(() => {
-    const tileWidth = Math.floor(100 / cols);
-    const tileHeight = Math.floor(100 / rows);
+    const tileWidth = (Math.floor(100 / cols) * img.naturalWidth) / 100;
+    const tileHeight = (Math.floor(100 / rows) * img.naturalHeight) / 100;
 
     const newTiles = [];
     for (let row = 0; row < rows; row++) {
@@ -15,10 +21,10 @@ const Puzzle = ({ image, rows, cols }) => {
         newTiles.push({
           id: `${row}-${col}`,
           style: {
-            width: `${tileWidth}%`,
-            height: `${tileHeight}%`,
+            width: `${tileWidth}px`,
+            height: `${tileHeight}px`,
             backgroundImage: `url(${image})`,
-            backgroundPosition: `-${col * tileWidth}% -${row * tileHeight}%`,
+            backgroundPosition: `${col * tileWidth}px ${row * tileHeight}px`,
           },
           order: row * cols + col,
         });
@@ -27,12 +33,14 @@ const Puzzle = ({ image, rows, cols }) => {
     setTiles(shuffle(newTiles));
   }, [image, rows, cols]);
 
+  console.log(" newTiles: ", tiles);
+
   const shuffle = (array) => {
     // Fisher-Yates shuffle algorithm (simplified)
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
+    // for (let i = array.length - 1; i > 0; i--) {
+    //   const j = Math.floor(Math.random() * (i + 1));
+    //   [array[i], array[j]] = [array[j], array[i]];
+    // }
     return array;
   };
 
@@ -46,22 +54,54 @@ const Puzzle = ({ image, rows, cols }) => {
   };
 
   return (
-    <div className="puzzle-container" style={{ height: "100%" }}>
-      {solved ? (
-        <div>Congratulations! Puzzle Solved!</div>
-      ) : (
-        <div className="puzzle">
-          {tiles.map((tile) => (
-            <div
-              key={tile.id}
-              className="tile"
-              style={{ ...tile.style, aspectRatio: `${cols} / ${rows}` }}
-              onClick={() => handleTileClick(tile)}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    <>
+      <div
+        className="puzzle-container"
+        style={{
+          height: PUZZLE_WIDTH,
+          width: PUZZLE_WIDTH,
+        }}
+      >
+        <div
+          style={{
+            backgroundImage: `url(${image})`,
+            width: "100%",
+            height: "100%",
+            backgroundRepeat: "no-repeat",
+            // backgroundSize: "cover",
+          }}
+        ></div>
+      </div>
+      <div className="puzzle-container">
+        {solved ? (
+          <div>Congratulations! Puzzle Solved!</div>
+        ) : (
+          <div
+            className="puzzle"
+            style={{
+              height: PUZZLE_WIDTH,
+              width: PUZZLE_WIDTH,
+            }}
+          >
+            {tiles.map((tile) => (
+              <div
+                key={tile.id}
+                className="tile"
+                onClick={() => handleTileClick(tile)}
+                style={{
+                  height: PUZZLE_WIDTH / rows,
+                  width: PUZZLE_WIDTH / cols,
+                }}
+              >
+                <div
+                  style={{ ...tile.style, aspectRatio: `${cols} / ${rows}` }}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

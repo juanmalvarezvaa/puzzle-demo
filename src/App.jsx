@@ -48,7 +48,14 @@ function App() {
           </>
         )}
       </header>
-      <Puzzle image={"https://picsum.photos/480"} rows={2} cols={2} />
+      {/* <Puzzle image={"https://picsum.photos/480"} rows={2} cols={2} /> */}
+      <Puzzle
+        image={
+          "https://fastly.picsum.photos/id/1083/480/480.jpg?hmac=V8U9GlhTWZMnPvppQxt4jJMFA4Q0pMPW2JchBVLUBLw"
+        }
+        rows={2}
+        cols={2}
+      />
     </>
   );
 }
