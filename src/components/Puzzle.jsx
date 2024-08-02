@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Reorder } from "framer-motion";
+import { motion, Reorder } from "framer-motion";
 import "./Puzzle.css";
 
 // const PUZZLE_WIDTH = 500;
@@ -47,10 +47,18 @@ const Puzzle = ({ image, rows }) => {
     setSolved(checkSolved(event));
   };
 
+  const handleRestart = () => {
+    setTiles(shuffle(tiles));
+    setSolved(false);
+  };
+
   return (
     <div className="puzzle-container">
       {solved ? (
-        <div>Congratulations! Puzzle Solved!</div>
+        <>
+          <div>Congratulations! Puzzle Solved!</div>
+          <button onClick={handleRestart}>Restart</button>
+        </>
       ) : (
         <Reorder.Group
           axis="y"
@@ -61,9 +69,13 @@ const Puzzle = ({ image, rows }) => {
         >
           {tiles.map((tile) => (
             <Reorder.Item key={tile.id} value={tile}>
-              <div
+              <motion.div
                 key={tile.id}
                 className="tile"
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "5px 5px 20px rgba(0, 0, 0, 0.3)",
+                }}
                 style={{ ...tile.style, aspectRatio: 1 }}
               />
             </Reorder.Item>

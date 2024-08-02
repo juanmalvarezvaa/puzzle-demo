@@ -3,12 +3,7 @@
     padding: 0;
     li {
       list-style: none;
-
-      &:hover {
-        position: relative;
-        cursor: pointer;
-        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
-      }
+      cursor: pointer;
     }
   }
 
