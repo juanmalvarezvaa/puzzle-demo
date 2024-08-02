@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Reorder } from "framer-motion";
 import "./Puzzle.css";
 
-const PUZZLE_WIDTH = 500;
+// const PUZZLE_WIDTH = 500;
 
 const Puzzle = ({ image, rows }) => {
   const [tiles, setTiles] = useState([]);
