@@ -55,10 +55,15 @@ const Puzzle = ({ image, rows }) => {
   return (
     <div className="puzzle-container">
       {solved ? (
-        <>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ ease: "easeOut", duration: 1 }}
+        >
           <div>Congratulations! Puzzle Solved!</div>
           <button onClick={handleRestart}>Restart</button>
-        </>
+        </motion.div>
       ) : (
         <Reorder.Group
           axis="y"
@@ -66,6 +71,10 @@ const Puzzle = ({ image, rows }) => {
           onReorder={(event) => {
             handleReOrder(event);
           }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ ease: "easeOut", duration: 1 }}
         >
           {tiles.map((tile) => (
             <Reorder.Item key={tile.id} value={tile}>
