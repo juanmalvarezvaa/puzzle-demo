@@ -1,11 +1,18 @@
 .puzzle-container {
-  .puzzle {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+  ul {
+    padding: 0;
+    li {
+      list-style: none;
 
-    .tile {
-      border: 1px solid white;
+      &:hover {
+        position: relative;
+        cursor: pointer;
+        box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.3);
+      }
     }
+  }
+
+  .tile {
+    /* border: 1px solid white; */
   }
 }
