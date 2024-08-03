@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, Reorder } from "framer-motion";
 import "./Puzzle.css";
 
@@ -12,6 +13,7 @@ const Puzzle = ({ image, rows }) => {
   img.src = image;
 
   useEffect(() => {
+    if (solved) return;
     const tileHeight = (Math.floor(100 / rows) * img.naturalHeight) / 100;
 
     const newTiles = [];
@@ -58,17 +60,33 @@ const Puzzle = ({ image, rows }) => {
 
   return (
     <div className="puzzle-container">
-      <dialog open={solved} className="win-dialog">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ ease: "easeOut", duration: 2 }}
-        >
-          <div>Congratulations! Puzzle Solved!</div>
-          <button onClick={handleRestart}>Restart</button>
-        </motion.div>
-      </dialog>
+      {solved &&
+        createPortal(
+          <>
+            <motion.div
+              className="backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "easeOut", duration: 0.2 }}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <motion.dialog
+              open={solved}
+              className="win-dialog"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ ease: "easeOut", duration: 0.5 }}
+            >
+              <div className="dialog-content">
+                <div>Congratulations! Puzzle Solved!</div>
+                <button onClick={handleRestart}>Restart</button>
+              </div>
+            </motion.dialog>
+          </>,
+          document.body
+        )}
+
       <Reorder.Group
         axis="y"
         values={tiles}
@@ -81,18 +99,18 @@ const Puzzle = ({ image, rows }) => {
         transition={{ ease: "easeIn", duration: 1 }}
       >
         {tiles.map((tile) => (
-          <Reorder.Item key={tile.id} value={tile} drag={solved ? false : "y"}>
+          <Reorder.Item key={tile.id} value={tile}>
             <motion.div
               key={tile.id}
               whileHover={{
-                scale: solved ? 1 : 1.02,
-                boxShadow: solved ? "" : "5px 5px 20px rgba(0, 0, 0, 0.3)",
+                scale: 1.02,
+                boxShadow: "5px 5px 20px rgba(0, 0, 0, 0.3)",
               }}
               style={{
                 ...tile.style,
                 aspectRatio: 1,
-                opacity: solved ? 0.5 : 1,
-                cursor: solved ? "not-allowed" : "grab",
+                opacity: 1,
+                cursor: "grab",
               }}
             />
           </Reorder.Item>

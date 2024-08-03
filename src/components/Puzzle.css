@@ -1,3 +1,32 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.win-dialog {
+  z-index: 100;
+  width: 500px;
+  height: 200px;
+  border: 1px solid rgba(255, 255, 255);
+  border-radius: 6px;
+  z-index: 11;
+  /* background-color: rgba(0, 0, 0, 0.8); */
+
+  .dialog-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
 .puzzle-container {
   ul {
     padding: 0;
@@ -5,9 +34,5 @@
       list-style: none;
       cursor: pointer;
     }
-  }
-
-  .win-dialog {
-    z-index: 100;
   }
 }
