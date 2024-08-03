@@ -79,7 +79,7 @@ const Puzzle = ({ image, rows }) => {
               transition={{ ease: "easeOut", duration: 0.5 }}
             >
               <div className="dialog-content">
-                <div>Congratulations! Puzzle Solved!</div>
+                <div class="win-title">Congratulations! Puzzle Solved!</div>
                 <button onClick={handleRestart}>Restart</button>
               </div>
             </motion.dialog>
