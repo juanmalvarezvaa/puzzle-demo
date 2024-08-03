@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, Reorder } from "framer-motion";
 import "./Puzzle.css";
 
@@ -35,6 +35,7 @@ const Puzzle = ({ image, rows }) => {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
+    if (checkSolved(array)) shuffle(array); // In case the shuffle went wrong
     return array;
   };
 
@@ -44,7 +45,6 @@ const Puzzle = ({ image, rows }) => {
 
   const handleReOrder = (event) => {
     setTiles(event);
-    setSolved(checkSolved(event));
   };
 
   const handleRestart = () => {
@@ -52,45 +52,52 @@ const Puzzle = ({ image, rows }) => {
     setSolved(false);
   };
 
+  const handleItemDrop = () => {
+    setSolved(checkSolved(tiles));
+  };
+
   return (
     <div className="puzzle-container">
-      {solved ? (
+      <dialog open={solved} className="win-dialog">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ ease: "easeOut", duration: 1 }}
+          transition={{ ease: "easeOut", duration: 2 }}
         >
           <div>Congratulations! Puzzle Solved!</div>
           <button onClick={handleRestart}>Restart</button>
         </motion.div>
-      ) : (
-        <Reorder.Group
-          axis="y"
-          values={tiles}
-          onReorder={(event) => {
-            handleReOrder(event);
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ ease: "easeOut", duration: 1 }}
-        >
-          {tiles.map((tile) => (
-            <Reorder.Item key={tile.id} value={tile}>
-              <motion.div
-                key={tile.id}
-                className="tile"
-                whileHover={{
-                  scale: 1.02,
-                  boxShadow: "5px 5px 20px rgba(0, 0, 0, 0.3)",
-                }}
-                style={{ ...tile.style, aspectRatio: 1 }}
-              />
-            </Reorder.Item>
-          ))}
-        </Reorder.Group>
-      )}
+      </dialog>
+      <Reorder.Group
+        axis="y"
+        values={tiles}
+        onReorder={(event) => {
+          handleReOrder(event);
+        }}
+        onMouseUp={handleItemDrop}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ ease: "easeIn", duration: 1 }}
+      >
+        {tiles.map((tile) => (
+          <Reorder.Item key={tile.id} value={tile} drag={solved ? false : "y"}>
+            <motion.div
+              key={tile.id}
+              whileHover={{
+                scale: solved ? 1 : 1.02,
+                boxShadow: solved ? "" : "5px 5px 20px rgba(0, 0, 0, 0.3)",
+              }}
+              style={{
+                ...tile.style,
+                aspectRatio: 1,
+                opacity: solved ? 0.5 : 1,
+                cursor: solved ? "not-allowed" : "grab",
+              }}
+            />
+          </Reorder.Item>
+        ))}
+      </Reorder.Group>
     </div>
   );
 };

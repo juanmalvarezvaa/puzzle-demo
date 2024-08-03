@@ -7,7 +7,7 @@
     }
   }
 
-  .tile {
-    /* border: 1px solid white; */
+  .win-dialog {
+    z-index: 100;
   }
 }
