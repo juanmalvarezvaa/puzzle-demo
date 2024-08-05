@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Puzzle from "./components/Puzzle";
+import { motion } from "framer-motion";
 
 const App = () => {
   const [rows, setRows] = useState(1);
@@ -52,31 +53,41 @@ const App = () => {
       <header className="image-header">
         {!imageData && (
           <>
-            <label htmlFor="imageInput">
+            <motion.label
+              htmlFor="imageInput"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ ease: "easeOut", duration: 0.2 }}
+            >
               Please upload an image or click{" "}
               <button onClick={handleRandomImage} disabled={isLoadingImage}>
                 {isLoadingImage ? "Loading..." : "HERE"}
               </button>{" "}
               for a random image.
-            </label>
+            </motion.label>
 
-            <input
+            <motion.input
               type="file"
               id="imageInput"
               name="imageInput"
               accept="image/*"
               onChange={handleLoadImage}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ ease: "easeOut", duration: 1 }}
             />
           </>
         )}
         {imageData && (
           <>
-            {/* <img
-              src={image}
-              alt="Loaded image"
-              style={{ heigh: "64px", width: "64px" }}
-            /> */}
-            <div className="rows-input">
+            <motion.div
+              className="rows-input"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "easeOut", duration: 0.5 }}
+            >
               <label htmlFor="rows">Desired row/cols:</label>
               <input
                 type="number"
@@ -87,7 +98,7 @@ const App = () => {
                 onChange={handleRowChange}
                 style={{ width: "20px", appearance: "textfield" }}
               />
-            </div>
+            </motion.div>
           </>
         )}
       </header>
