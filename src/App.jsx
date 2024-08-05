@@ -5,6 +5,7 @@ import Puzzle from "./components/Puzzle";
 const App = () => {
   const [rows, setRows] = useState(1);
   const [imageData, setImageData] = useState(null);
+  const [isLoadingImage, setIsLoadingImage] = useState(false);
 
   const handleRowChange = (event) => {
     setRows(event.target.value);
@@ -29,35 +30,44 @@ const App = () => {
   };
 
   const handleRandomImage = () => {
+    setIsLoadingImage(true);
     const url = "https://picsum.photos/720";
     const img = new Image();
     img.src = url;
     img.onload = () => {
+      setIsLoadingImage(false);
       setImageData({
         source: url,
         size: { width: img.width, height: img.height },
       });
     };
+    img.onerror = () => {
+      setIsLoadingImage(false);
+      console.error("Error loading image");
+    };
   };
-
-  console.log("imageData: ", imageData);
 
   return (
     <>
       <header className="image-header">
-        <label htmlFor="imageInput">
-          Please upload an image or click{" "}
-          <button onClick={handleRandomImage}>HERE</button> for a random image.
-        </label>
-
         {!imageData && (
-          <input
-            type="file"
-            id="imageInput"
-            name="imageInput"
-            accept="image/*"
-            onChange={handleLoadImage}
-          />
+          <>
+            <label htmlFor="imageInput">
+              Please upload an image or click{" "}
+              <button onClick={handleRandomImage} disabled={isLoadingImage}>
+                {isLoadingImage ? "Loading..." : "HERE"}
+              </button>{" "}
+              for a random image.
+            </label>
+
+            <input
+              type="file"
+              id="imageInput"
+              name="imageInput"
+              accept="image/*"
+              onChange={handleLoadImage}
+            />
+          </>
         )}
         {imageData && (
           <>
