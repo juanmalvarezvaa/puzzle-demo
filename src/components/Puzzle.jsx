@@ -3,31 +3,29 @@ import { createPortal } from "react-dom";
 import { motion, Reorder } from "framer-motion";
 import "./Puzzle.css";
 
-// const PUZZLE_WIDTH = 500;
-
-const Puzzle = ({ image, rows }) => {
+const Puzzle = ({ image, rows, onRestart }) => {
   const [tiles, setTiles] = useState([]);
   const [solved, setSolved] = useState(false);
-
-  let img = document.createElement("img");
-  img.src = image;
+  const { source, size } = image;
 
   useEffect(() => {
     if (solved) return;
-    const tileHeight = (Math.floor(100 / rows) * img.naturalHeight) / 100;
+
+    const tileHeight = (Math.floor(100 / rows) * size.height) / 100;
 
     const newTiles = [];
     for (let row = 0; row < rows; row++) {
       newTiles.push({
         id: row,
         style: {
-          width: `${img.naturalWidth}px`,
+          width: `${size.width}px`,
           height: `${tileHeight}px`,
-          backgroundImage: `url(${image})`,
+          backgroundImage: `url(${source})`,
           backgroundPosition: `0px -${row * tileHeight}px`,
         },
       });
     }
+
     setTiles(shuffle(newTiles));
   }, [image, rows]);
 
@@ -50,8 +48,9 @@ const Puzzle = ({ image, rows }) => {
   };
 
   const handleRestart = () => {
-    setTiles(shuffle(tiles));
+    // setTiles(shuffle(tiles));
     setSolved(false);
+    onRestart();
   };
 
   const handleItemDrop = () => {

@@ -2,39 +2,72 @@ import { useState } from "react";
 import "./App.css";
 import Puzzle from "./components/Puzzle";
 
-function App() {
-  const [image, setImage] = useState(null);
+const App = () => {
   const [rows, setRows] = useState(1);
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setImage(URL.createObjectURL(file));
-  };
+  const [imageData, setImageData] = useState(null);
 
   const handleRowChange = (event) => {
     setRows(event.target.value);
   };
 
+  const handleLoadImage = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target.result;
+        img.onload = () => {
+          setImageData({
+            source: e.target.result,
+            size: { width: img.width, height: img.height },
+          });
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleRandomImage = () => {
+    const url = "https://picsum.photos/720";
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      setImageData({
+        source: url,
+        size: { width: img.width, height: img.height },
+      });
+    };
+  };
+
+  console.log("imageData: ", imageData);
+
   return (
     <>
       <header className="image-header">
-        {!image && <label htmlFor="imageInput">Please upload an image.</label>}
-        <input
-          type="file"
-          id="imageInput"
-          name="imageInput"
-          accept="image/*"
-          onChange={handleImageChange}
-        />
-        {image && (
+        <label htmlFor="imageInput">
+          Please upload an image or click{" "}
+          <button onClick={handleRandomImage}>HERE</button> for a random image.
+        </label>
+
+        {!imageData && (
+          <input
+            type="file"
+            id="imageInput"
+            name="imageInput"
+            accept="image/*"
+            onChange={handleLoadImage}
+          />
+        )}
+        {imageData && (
           <>
-            <img
+            {/* <img
               src={image}
               alt="Loaded image"
               style={{ heigh: "64px", width: "64px" }}
-            />
+            /> */}
             <div className="rows-input">
-              <label htmlFor="imageInput">Desired row/cols:</label>
+              <label htmlFor="rows">Desired row/cols:</label>
               <input
                 type="number"
                 name="rows"
@@ -48,15 +81,18 @@ function App() {
           </>
         )}
       </header>
-      {image && rows > 1 && <Puzzle image={image} rows={rows} />}
-      {/* <Puzzle
-        image={
-          "https://fastly.picsum.photos/id/1083/480/480.jpg?hmac=V8U9GlhTWZMnPvppQxt4jJMFA4Q0pMPW2JchBVLUBLw"
-        }
-        rows={rows}
-      /> */}
+      {rows > 1 && imageData && (
+        <Puzzle
+          image={imageData}
+          rows={rows}
+          onRestart={() => {
+            setImageData(null);
+            setRows(1);
+          }}
+        />
+      )}
     </>
   );
-}
+};
 
 export default App;
