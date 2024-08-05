@@ -55,8 +55,8 @@ const App = () => {
           <>
             <motion.label
               htmlFor="imageInput"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 0.5 } }}
               exit={{ opacity: 0 }}
               transition={{ ease: "easeOut", duration: 0.2 }}
             >
@@ -73,10 +73,10 @@ const App = () => {
               name="imageInput"
               accept="image/*"
               onChange={handleLoadImage}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: -50 }}
+              animate={{ opacity: 1, y: 0, transition: { delay: 1 } }}
               exit={{ opacity: 0 }}
-              transition={{ ease: "easeOut", duration: 1 }}
+              transition={{ ease: "easeOut", duration: 0.2 }}
             />
           </>
         )}

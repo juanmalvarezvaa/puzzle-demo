@@ -62,6 +62,21 @@ const Puzzle = ({ image, rows, onRestart }) => {
       {solved &&
         createPortal(
           <>
+            <motion.div className="win-dialog-container">
+              <motion.dialog
+                open={solved}
+                className="win-dialog"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ ease: "easeOut", duration: 0.5 }}
+              >
+                <div className="dialog-content">
+                  <div class="win-title">Congratulations! Puzzle Solved!</div>
+                  <button onClick={handleRestart}>Restart</button>
+                </div>
+              </motion.dialog>
+            </motion.div>
             <motion.div
               className="backdrop"
               initial={{ opacity: 0 }}
@@ -69,19 +84,6 @@ const Puzzle = ({ image, rows, onRestart }) => {
               transition={{ ease: "easeOut", duration: 0.2 }}
               onClick={(e) => e.stopPropagation()}
             />
-            <motion.dialog
-              open={solved}
-              className="win-dialog"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ ease: "easeOut", duration: 0.5 }}
-            >
-              <div className="dialog-content">
-                <div class="win-title">Congratulations! Puzzle Solved!</div>
-                <button onClick={handleRestart}>Restart</button>
-              </div>
-            </motion.dialog>
           </>,
           document.body
         )}
