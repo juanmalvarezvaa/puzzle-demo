@@ -11,17 +11,23 @@ const Puzzle = ({ image, rows, onRestart }) => {
   useEffect(() => {
     if (solved) return;
 
-    const tileHeight = (Math.floor(100 / rows) * size.height) / 100;
+    const maxWidth = 1280;
+    const aspectRatio = size.width / size.height;
+    const finalWidth = size.width > maxWidth ? maxWidth : size.width;
+    const finalHeight = finalWidth / aspectRatio;
+    const tileHeight = finalHeight / rows;
 
     const newTiles = [];
     for (let row = 0; row < rows; row++) {
       newTiles.push({
         id: row,
         style: {
-          width: `${size.width}px`,
+          width: `${finalWidth}px`,
           height: `${tileHeight}px`,
           backgroundImage: `url(${source})`,
+          backgroundSize: `${finalWidth}px ${finalHeight}px`,
           backgroundPosition: `0px -${row * tileHeight}px`,
+          backgroundRepeat: 'no-repeat',
         },
       });
     }
