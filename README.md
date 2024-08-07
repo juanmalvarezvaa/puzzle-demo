@@ -1,8 +1,14 @@
-# React + Vite
+This is a simple Puzzle Game done with [React](https://react.dev/), [Framer](https://www.framer.com/motion/) and [Three.JS](https://threejs.org/)
+It will allow you to load an image or get a random one, select a number of rows, and present you with a puzzle to solve.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Getting Started
 
-Currently, two official plugins are available:
+Go to the root folder of the project, and run the following commands:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+```bash
+npm install
+# then, to run the application:
+npm run dev
+```
+
+And open [http://localhost:5173/](http://localhost:5173/) in your browser.
